@@ -213,10 +213,13 @@ jobs:
           aws sts get-caller-identity
 
       # 3. Verify existing EKS cluster
-      - name: Update kubeconfig
+      - name: Check EKS cluster
         run: |
-  
-          aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          aws eks describe-cluster \
+            --name ${{ env.EKS_CLUSTER_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query "cluster.status" \
+            --output text
 
       # 4. Install kubectl
       - name: Install kubectl
