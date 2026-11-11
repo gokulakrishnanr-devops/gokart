@@ -211,16 +211,10 @@ jobs:
       - name: Verify AWS identity
         run: |
           aws sts get-caller-identity
-
-      # 3. Verify existing EKS cluster
+          
+    # 3. Verify existing EKS cluster
       - name: Check EKS cluster
         run: aws eks describe-cluster --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }} --query "cluster.status" --output text
-      
-        # 4. Connect to EKS
-      - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
-          
-              
 
       # 4. Install kubectl
       - name: Install kubectl
@@ -232,10 +226,7 @@ jobs:
 
       # 6. Connect to EKS
       - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig \
-            --name ${{ env.EKS_CLUSTER_NAME }} \
-            --region ${{ env.AWS_REGION }}
+        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
 
       # 7. Verify Kubernetes connection
       - name: Verify Kubernetes connection
